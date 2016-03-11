@@ -301,7 +301,7 @@ public class ModelHelper {
             //create query string "update tablename set field=?, field=?, field=? where id=?;"
             String qs = "";
             for (int i = 1; i < fields.length; i++) {
-                if (i != 0) {
+                if (i != 1) {
                     qs += ",";
                 }
                 qs += fields[i] + "=?";

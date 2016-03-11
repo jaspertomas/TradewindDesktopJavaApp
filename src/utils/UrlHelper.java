@@ -9,7 +9,6 @@ public class UrlHelper {
 	public static String escapeUrl(String urlstring)
 	{
 		//escape special characters properly
-        urlstring=urlstring;
 		try {
             URL url = new URL(urlstring);
             URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());

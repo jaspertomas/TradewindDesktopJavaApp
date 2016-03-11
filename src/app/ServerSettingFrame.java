@@ -26,7 +26,9 @@ public class ServerSettingFrame extends javax.swing.JFrame {
         initComponents();
         instance=this;
         
-        txtServerAddress.setText(Constants.getServerUrl());
+        Setting rawServerIp=Setting.getByName("raw_server_ip");
+        if(rawServerIp!=null)
+            txtServerAddress.setText(rawServerIp.getValue());
     }
 
     /**
@@ -117,22 +119,28 @@ public class ServerSettingFrame extends javax.swing.JFrame {
         }
                 
         //fetch setting from database
-        Setting serverIp=Setting.getByName("server_ip");
-        if(serverIp!=null)
+        Setting rawServerIp=Setting.getByName("raw_server_ip");
+        if(rawServerIp==null)
         {
-            serverIp.setValue(address);
-            serverIp.save();
+            rawServerIp=new Setting();
+            rawServerIp.setName("raw_server_ip");
+            rawServerIp.setPriority(0);
         }
-        //if it doesn't exist, create it
-        else
+        rawServerIp.setValue(address);
+        rawServerIp.save();
+        Setting serverIp=Setting.getByName("server_ip");
+        if(serverIp==null)
         {
             serverIp=new Setting();
             serverIp.setName("server_ip");
-            serverIp.setValue(address);
             serverIp.setPriority(0);
-            //serverIp.setId(1);
-            serverIp.save();
         }
+        serverIp.setValue("");
+//        serverIp.setValue("http://"+address+"/tomas_accounting/web/index.php");
+            System.out.println(serverIp.getValue());
+//        serverIp.setValue("http://"+address+"/college_enrollment_system");
+        serverIp.save();
+
         //open login window, close this one
         WindowManager.open(WindowManager.LOGINFRAME);
     }//GEN-LAST:event_btnSetServerAddressActionPerformed

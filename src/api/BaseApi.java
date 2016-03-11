@@ -47,7 +47,6 @@ abstract public class BaseApi implements Runnable {
     }
 
     protected JSONObject doInBackground() {
-        System.out.println("BaseApi.doInBackground");
         switch (getMethod()) {
             case 1://METHOD_GET
                 return doInBackgroundGet();
@@ -153,7 +152,6 @@ abstract public class BaseApi implements Runnable {
     }
 
     private JSONObject doInBackgroundPost() {
-        System.out.println("BaseApi.doInBackgroundPost");
         DefaultHttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(getUrl());
         JSONObject json = new JSONObject();
@@ -189,14 +187,12 @@ abstract public class BaseApi implements Runnable {
     }
 
     public void execute() {
-        System.out.println("BaseApi.execute");
         Thread thread = new Thread(this);
         thread.start();
     }
 
     @Override
     public void run() {
-        System.out.println("BaseApi.run");
         JSONObject json = doInBackground();
         onPostExecute(json);
     }
