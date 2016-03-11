@@ -135,7 +135,7 @@ public class ServerSettingFrame extends javax.swing.JFrame {
             serverIp.setName("server_ip");
             serverIp.setPriority(0);
         }
-        serverIp.setValue("http://"+address+"/tomas_accounting/web/index.php");
+        serverIp.setValue(Constants.SERVER_URL_PREFIX+address+Constants.SERVER_URL_SUFFIX);
         serverIp.save();
 
         //reset Constant setting

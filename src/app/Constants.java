@@ -9,6 +9,8 @@ import org.omg.CORBA.Environment;
 
 public class Constants  {
 	
+        public final static String SERVER_URL_PREFIX = "http://";
+        public final static String SERVER_URL_SUFFIX = "/tomas_accounting/web/index.php";
 	static String serverUrl=null;
 	public static void initServerUrl() {
 	    Setting serverIp=Setting.getByName("server_ip");
