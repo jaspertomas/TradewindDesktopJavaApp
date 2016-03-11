@@ -25,6 +25,8 @@ import utils.MyEncryptionHelper;
 
 import app.Constants;
 import app.LoginFrame;
+import java.io.IOException;
+import org.apache.http.client.HttpResponseException;
 
 public class AndroidLoginApi extends BaseAndroidLoginApi{
 	public AndroidLoginApi() {
@@ -50,13 +52,15 @@ public class AndroidLoginApi extends BaseAndroidLoginApi{
 		//save records
 		//save username, save password as entered into login page
 		try {
-			DataProcessHelper.process(json);
+                    if(json.getBoolean("success"))
+                        LoginFrame.getInstance().onLoginSuccess();
+                    else
+                        LoginFrame.getInstance().onLoginFailure(json.getString("error"));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+                    LoginFrame.getInstance().onLoginFailure(e.getMessage());
+                    e.printStackTrace();
 		}
 		
-		LoginFrame.getInstance().onLoginSuccess();
 	}
 
 	@Override
@@ -87,6 +91,29 @@ public class AndroidLoginApi extends BaseAndroidLoginApi{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+        @Override
+        public void catchUnknownHostException(IOException e, JSONObject json) throws JSONException {
+                System.err.println("SERVER NOT FOUND: "+Constants.getServerUrl());
+		LoginFrame.getInstance().onLoginFailure("SERVER NOT FOUND: "+Constants.getServerUrl());
+        }
+	@Override public void catchHttpResponseException(HttpResponseException e, JSONObject json) throws JSONException
+	{
+		LoginFrame.getInstance().onLoginFailure(e.getMessage());
+		System.err.println(contextString+ ": HttpResponseException: " + e.getMessage());
+		e.printStackTrace();
+	}
+	@Override public void catchIOException(IOException e, JSONObject json) throws JSONException
+	{
+		LoginFrame.getInstance().onLoginFailure(e.getMessage());
+		System.err.println(contextString+ ": IOException: " + e.getMessage());
+		e.printStackTrace();
+	}
+	@Override public void catchJSONException(JSONException e, JSONObject json)
+	{
+		LoginFrame.getInstance().onLoginFailure(e.getMessage());
+		System.err.println(contextString+ ": JSONException: " + e.getMessage());
+		e.printStackTrace();
 	}
 	
 	

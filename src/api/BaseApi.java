@@ -1,6 +1,7 @@
 package api;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -31,6 +32,8 @@ abstract public class BaseApi implements Runnable {
     abstract public String getUrl();
 
     abstract public Integer getMethod();
+
+    abstract public void catchUnknownHostException(IOException e, JSONObject json) throws JSONException;
 
     abstract public void catchHttpResponseException(HttpResponseException e, JSONObject json) throws JSONException;
 
@@ -81,6 +84,9 @@ abstract public class BaseApi implements Runnable {
                 }
                 System.out.println(getContextString() + " response: " + response);
                 json = convertResponseToJson(response);
+                processResponse(json);
+            } catch (UnknownHostException e) {
+                catchUnknownHostException(e, json);
             } catch (HttpResponseException e) {
                 catchHttpResponseException(e, json);
             } catch (IOException e) {
@@ -110,6 +116,9 @@ abstract public class BaseApi implements Runnable {
                 response = client.execute(post, responseHandler);
                 System.out.println(getContextString() + " response: " + response);
                 json = convertResponseToJson(response);
+                processResponse(json);
+            } catch (UnknownHostException e) {
+                catchUnknownHostException(e, json);
             } catch (HttpResponseException e) {
                 catchHttpResponseException(e, json);
             } catch (IOException e) {
@@ -139,6 +148,9 @@ abstract public class BaseApi implements Runnable {
                 response = client.execute(post, responseHandler);
                 System.out.println(getContextString() + " response: " + response);
                 json = convertResponseToJson(response);
+                processResponse(json);
+            } catch (UnknownHostException e) {
+                catchUnknownHostException(e, json);
             } catch (HttpResponseException e) {
                 catchHttpResponseException(e, json);
             } catch (IOException e) {
@@ -170,6 +182,9 @@ abstract public class BaseApi implements Runnable {
                 response = client.execute(post, responseHandler);
                 System.out.println(getContextString() + " response: " + response);
                 json = convertResponseToJson(response);
+                processResponse(json);
+            } catch (UnknownHostException e) {
+                catchUnknownHostException(e, json);
             } catch (HttpResponseException e) {
                 catchHttpResponseException(e, json);
             } catch (IOException e) {
@@ -183,7 +198,6 @@ abstract public class BaseApi implements Runnable {
     }
 
     protected void onPostExecute(JSONObject json) {
-        processResponse(json);
     }
 
     public void execute() {

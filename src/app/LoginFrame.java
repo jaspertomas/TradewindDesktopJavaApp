@@ -220,8 +220,13 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
+    public void onLoginFailure(String msg)
+    {
+        JOptionPane.showMessageDialog(this, msg, "Title",JOptionPane.PLAIN_MESSAGE);
+    }
     public void onLoginSuccess()
     {
         JOptionPane.showMessageDialog(this, "Login Success", "Title",JOptionPane.PLAIN_MESSAGE);
+        WindowManager.open(WindowManager.MAINFRAME);
     }
 }

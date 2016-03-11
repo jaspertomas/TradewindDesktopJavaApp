@@ -32,7 +32,7 @@ import utils.UrlHelper;
 
 import app.Constants;
 import app.Constants;
-public class BaseAndroidLoginApi extends BaseApi{
+public abstract class BaseAndroidLoginApi extends BaseApi{
 	String contextString="BaseAndroidLoginApi";
 	public String getContextString(){return contextString;}
 	String accessToken;//options: []
@@ -84,24 +84,10 @@ public class BaseAndroidLoginApi extends BaseApi{
 	public void processResponse(JSONObject json) {
             System.out.println(json);
         }
-	@Override public void catchHttpResponseException(HttpResponseException e, JSONObject json) throws JSONException
-	{
-		e.printStackTrace();
-		System.out.println(contextString+ ": HttpResponseException: " + e.getMessage());
-	}
-	@Override public void catchIOException(IOException e, JSONObject json) throws JSONException
-	{
-		e.printStackTrace();
-		System.out.println(contextString+ ": IOException: " + e.getMessage());
-	}
-	@Override public void catchJSONException(JSONException e, JSONObject json)
-	{
-		e.printStackTrace();
-		System.out.println(contextString+ ": JSONException: " + e.getMessage());
-	}
 	@Override public JSONObject convertResponseToJson(String response) throws JSONException
 	{
 		return new JSONObject();
 	}
+
 
 }

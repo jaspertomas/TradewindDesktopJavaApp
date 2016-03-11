@@ -138,12 +138,21 @@ public class ServerSettingFrame extends javax.swing.JFrame {
         serverIp.setValue("http://"+address+"/tomas_accounting/web/index.php");
         serverIp.save();
 
+        //reset Constant setting
+        Constants.initServerUrl();
+        
         //open login window, close this one
         WindowManager.open(WindowManager.LOGINFRAME);
     }//GEN-LAST:event_btnSetServerAddressActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        System.exit(0);
+        //if server ip is set, go back to login screen
+        //else exit
+        Setting serverIp=Setting.getByName("server_ip");
+        if(serverIp!=null)
+            WindowManager.open(WindowManager.LOGINFRAME);
+        else
+            System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
