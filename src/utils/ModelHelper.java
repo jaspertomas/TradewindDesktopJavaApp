@@ -235,7 +235,7 @@ public class ModelHelper {
             PreparedStatement prep = conn.prepareStatement(sql);
             for (int i = 0; i < fields.length; i++) {
                 try {
-                    addValueToPreparedStatement(prep, json, i);
+                    addValueToPreparedStatement(prep, json, i, i+1);
                 } catch (JSONException ex) {
                     Logger.getLogger(ModelHelper.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
@@ -272,7 +272,7 @@ public class ModelHelper {
             for (int j = 0; j < array.length(); j++) {
                 json = array.getJSONObject(j);
                 for (int i = 0; i < fields.length; i++) {
-                    addValueToPreparedStatement(prep, json, i);
+                    addValueToPreparedStatement(prep, json, i, i+1);
                 }
             }
 
@@ -311,9 +311,9 @@ public class ModelHelper {
             PreparedStatement prep = conn.prepareStatement(sql);
             try {
                 for (int i = 1; i < fields.length; i++) {
-                    addValueToPreparedStatement(prep, json, i);
+                    addValueToPreparedStatement(prep, json, i, i);
                 }
-                addValueToPreparedStatement(prep, json, 0);//id
+                addValueToPreparedStatement(prep, json, 0, fields.length);//id
             } catch (JSONException ex) {
                 Logger.getLogger(ModelHelper.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -351,9 +351,9 @@ public class ModelHelper {
                 json = array.getJSONObject(j);
                 //for each field; omit id, put it at the end instead
                 for (int i = 1; i < fields.length; i++) {
-                    addValueToPreparedStatement(prep, json, i);
+                    addValueToPreparedStatement(prep, json, i, i);
                 }
-                addValueToPreparedStatement(prep, json, 0);//id
+                addValueToPreparedStatement(prep, json, 0, fields.length);//id
             }
         } catch (JSONException ex) {
             Logger.getLogger(ModelHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -367,75 +367,75 @@ public class ModelHelper {
         return updateCounts;
     }
 
-    private void addValueToPreparedStatement(PreparedStatement prep, JSONObject json, Integer i) throws SQLException, JSONException {
+    private void addValueToPreparedStatement(PreparedStatement prep, JSONObject json, Integer i, Integer position) throws SQLException, JSONException {
         if (!json.has(fields[i])) {
             switch (datatypes[i]) {
                 case INTEGER:
-                    prep.setNull(i + 1, java.sql.Types.INTEGER);
+                    prep.setNull(position, java.sql.Types.INTEGER);
                     break;
                 case STRING:
-                    prep.setNull(i + 1, java.sql.Types.VARCHAR);
+                    prep.setNull(position, java.sql.Types.VARCHAR);
                     break;
                 case BOOLEAN:
-                    prep.setNull(i + 1, java.sql.Types.BOOLEAN);
+                    prep.setNull(position, java.sql.Types.BOOLEAN);
                     break;
                 case DOUBLE:
-                    prep.setNull(i + 1, java.sql.Types.DOUBLE);
+                    prep.setNull(position, java.sql.Types.DOUBLE);
                     break;
                 case DATE:
-                    prep.setNull(i + 1, java.sql.Types.VARCHAR);
+                    prep.setNull(position, java.sql.Types.VARCHAR);
                     break;
                 case DATETIME:
-                    prep.setNull(i + 1, java.sql.Types.VARCHAR);
+                    prep.setNull(position, java.sql.Types.VARCHAR);
                     break;
                 case DECIMAL:
-                    prep.setNull(i + 1, java.sql.Types.DECIMAL);
+                    prep.setNull(position, java.sql.Types.DECIMAL);
                     break;
                 case LONG:
-                    prep.setNull(i + 1, java.sql.Types.BIGINT);
+                    prep.setNull(position, java.sql.Types.BIGINT);
                     break;
                 case FLOAT:
-                    prep.setNull(i + 1, java.sql.Types.FLOAT);
+                    prep.setNull(position, java.sql.Types.FLOAT);
                     break;
                 case SHORT:
-                    prep.setNull(i + 1, java.sql.Types.SMALLINT);
+                    prep.setNull(position, java.sql.Types.SMALLINT);
                     break;
             }
         } else {
             switch (datatypes[i]) {
                 case INTEGER:
-                    prep.setInt(i + 1, json.getInt(fields[i]));
+                    prep.setInt(position, json.getInt(fields[i]));
                     break;
                 case STRING:
-                    prep.setString(i + 1, json.getString(fields[i]));
+                    prep.setString(position, json.getString(fields[i]));
                     break;
                 case BOOLEAN:
-                    prep.setBoolean(i + 1, json.getBoolean(fields[i]));
+                    prep.setBoolean(position, json.getBoolean(fields[i]));
                     break;
                 case DOUBLE:
-                    prep.setDouble(i + 1, json.getDouble(fields[i]));
+                    prep.setDouble(position, json.getDouble(fields[i]));
                     break;
                 case DATE: {
                     java.util.Date d1 = DateHelper.toDate(json.getString(fields[i]));
-                    prep.setDate(i + 1, new java.sql.Date(d1.getTime()));
+                    prep.setDate(position, new java.sql.Date(d1.getTime()));
                 }
                 break;
                 case DATETIME: {
                     java.util.Date d1 = DateTimeHelper.toDate(json.getString(fields[i]));
-                    prep.setDate(i + 1, new java.sql.Date(d1.getTime()));
+                    prep.setDate(position, new java.sql.Date(d1.getTime()));
                 }
                 break;
                 case DECIMAL:
-                    prep.setBigDecimal(i + 1, BigDecimal.valueOf(json.getDouble(fields[i])));
+                    prep.setBigDecimal(position, BigDecimal.valueOf(json.getDouble(fields[i])));
                     break;
                 case LONG:
-                    prep.setLong(i + 1, json.getLong(fields[i]));
+                    prep.setLong(position, json.getLong(fields[i]));
                     break;
                 case FLOAT:
-                    prep.setFloat(i + 1, Double.valueOf(json.getDouble(fields[i])).floatValue());
+                    prep.setFloat(position, Double.valueOf(json.getDouble(fields[i])).floatValue());
                     break;
                 case SHORT:
-                    prep.setShort(i + 1, Integer.valueOf(json.getInt(fields[i])).shortValue());
+                    prep.setShort(position, Integer.valueOf(json.getInt(fields[i])).shortValue());
                     break;
             }
         }

@@ -135,10 +135,7 @@ public class ServerSettingFrame extends javax.swing.JFrame {
             serverIp.setName("server_ip");
             serverIp.setPriority(0);
         }
-        serverIp.setValue("");
-//        serverIp.setValue("http://"+address+"/tomas_accounting/web/index.php");
-            System.out.println(serverIp.getValue());
-//        serverIp.setValue("http://"+address+"/college_enrollment_system");
+        serverIp.setValue("http://"+address+"/tomas_accounting/web/index.php");
         serverIp.save();
 
         //open login window, close this one
